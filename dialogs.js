@@ -1,18 +1,9 @@
 ;(function (window, document, $, undefined) {
-  var modalWindow = {
-    frame: null,
-    header: null,
-    body: null,
-    footer: null,
-    self: null,
-    getHTML: function () {
-      return this.frame.append(this.header, this.body, this.footer);
-    }
-  };
+  var modalWindow;
 
   $(function () {
     // Create an hidden modal window
-    modalWindow.frame = $('<div>', {
+    modalWindow = $('<div>', {
       class: 'modal hide fade',
       tabindex: '-1',
       role: 'dialog',
@@ -25,11 +16,12 @@
     modalWindow.body = $('<div>', {class: 'modal-body'});
     
     modalWindow.footer = $('<div>', {class: 'modal-footer'});
-    
-    modalWindow.self = modalWindow.getHTML();
-    modalWindow.self.modal({backdrop: 'static', show: false});
 
-    $('body').append(modalWindow.self);
+    modalWindow.append(modalWindow.header, modalWindow.body, modalWindow.footer);
+    
+    modalWindow.modal({backdrop: 'static', show: false});
+
+    $('body').append(modalWindow);
   });
 
   // Return a button object
@@ -62,8 +54,8 @@
 
   // Remove all the listeners from the object
   var removeListeners = function () {
-    modalWindow.self.off('hidden');
-    modalWindow.self.off('shown');
+    modalWindow.off('hidden');
+    modalWindow.off('shown');
     modalWindow.footer.off('click');
   };
 
@@ -85,10 +77,10 @@
       removeListeners();
       modalWindow.body.html('<p>' + message + '</p>');
       modalWindow.footer.empty().append(getCloseButton('Ok'));
-      modalWindow.self.modal('show');
+      modalWindow.modal('show');
       
       if (callback != null) {
-        modalWindow.self.on('hidden', callback);
+        modalWindow.on('hidden', callback);
       }
     },
 
@@ -109,12 +101,12 @@
       removeListeners();
       modalWindow.body.html('<p>' + message + '</p>');
       modalWindow.footer.empty().append(getDoubleButtons());
-      modalWindow.self.modal('show');
+      modalWindow.modal('show');
       
       modalWindow.footer.on('click', 'button', function (evt) {
         var result = evt.target.innerHTML === 'Ok';
         if (result) {
-          modalWindow.self.modal('hide'); 
+          modalWindow.modal('hide'); 
         }
         if (callback != null) {
          callback(result); 
@@ -148,18 +140,18 @@
       removeListeners();
       modalWindow.body
         .html('<p>' + message + '</p><p><input type="text" value="'+value+'"></p>');
-      modalWindow.self.on('shown', function () {
+      modalWindow.on('shown', function () {
         modalWindow.body.find('input').focus();
       });
       modalWindow.footer.empty().append(getDoubleButtons());
-      modalWindow.self.modal('show');
+      modalWindow.modal('show');
 
       modalWindow.footer.on('click', 'button', function (evt) {
         var confirm = evt.target.innerHTML === 'Ok';
         var result = modalWindow.body.find('input').val();
         
         if (confirm) {
-          modalWindow.self.modal('hide'); 
+          modalWindow.modal('hide'); 
         }
         if (callback != null) {
           callback((confirm && result != null) ? result : null);
