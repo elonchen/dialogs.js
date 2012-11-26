@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>dialogs.js demo</title>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+  <h1>dialog.js demo</h1>
+  <h2>Simple</h2>
+  <button id="alert" class="btn">alert</button>
+  <button id="confirm" class="btn">confirm</button>
+  <button id="prompt" class="btn">prompt</button>
+  <hr>
+  <h2>With callback (look at your console)</h2>
+  <button id="alertC" class="btn">alert</button>
+  <button id="confirmC" class="btn">confirm</button>
+  <button id="promptC" class="btn">prompt</button>
+  <hr>
+  <script src="jquery-1.8.3.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="../dialogs.js"></script>
+  <script>
+    /* ~ Listeners ~ */
+    
+    $('#alert').on('click', function () {
+      dialogs.alert('Hello from alert');
+    });
+    
+    $('#confirm').on('click', function () {
+      dialogs.confirm('Continue?');
+    });
+    
+    $('#prompt').on('click', function () {
+      dialogs.prompt('How old is old?');
+    });
+    
+    /* ~ Listeners with callbacks ~ */
+    
+    $('#alertC').on('click', function () {
+      console.log('Alert called');
+      dialogs.alert('Pay attention!', function () {
+        console.log('Alert dismissed');
+      });
+    });
+
+    $('#confirmC').on('click', function () {
+      console.log('Confirm called');
+      dialogs.confirm('Do I confirm?', function (result) {
+        console.log('Confirm dismissed');
+        console.log('Result', result);
+      });
+    });
+
+    $('#promptC').on('click', function () {
+      console.log('Prompt called');
+      dialogs.prompt('Your name is?', 'Danilo', function (result) {
+        console.log('Prompt dismissed');
+        console.log('Result', result);
+      });
+    });
+  </script>
+</body>
+</html>
