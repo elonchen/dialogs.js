@@ -105,11 +105,15 @@
       
       modalWindow.footer.on('click', 'button', function (evt) {
         var result = evt.target.innerHTML === 'Ok';
+
+        if (callback != null) {
+          modalWindow.on('hidden', function () {
+            callback(result);
+          });
+        }
+
         if (result) {
           modalWindow.modal('hide'); 
-        }
-        if (callback != null) {
-         callback(result); 
         }
       });
     },
@@ -149,12 +153,15 @@
       modalWindow.footer.on('click', 'button', function (evt) {
         var confirm = evt.target.innerHTML === 'Ok';
         var result = modalWindow.body.find('input').val();
-        
+
+        if (callback != null) {
+          modalWindow.on('hidden', function () {
+            callback((confirm && result != null) ? result : null);
+          });
+        }
+
         if (confirm) {
           modalWindow.modal('hide'); 
-        }
-        if (callback != null) {
-          callback((confirm && result != null) ? result : null);
         }
       });
     }

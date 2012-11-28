@@ -16,6 +16,9 @@
   <button id="confirmC" class="btn">confirm</button>
   <button id="promptC" class="btn">prompt</button>
   <hr>
+  <h2>Multiple openers</h2>
+  <button id="multiple" class="btn">multiple</button>
+  
   <script src="jquery-1.8.3.min.js"></script>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="../dialogs.js"></script>
@@ -56,6 +59,21 @@
       dialogs.prompt('Your name is?', 'Danilo', function (result) {
         console.log('Prompt dismissed');
         console.log('Result', result);
+      });
+    });
+
+    /* ~ Multiple openers ~ */
+    
+    $('#multiple').on('click', function () {
+      console.log('Multiple called');
+      dialogs.alert('First', function () {
+        console.log('Alert gone');
+        dialogs.alert('Second', function () {
+          console.log('Confirm gone');
+          dialogs.alert('Third', function () {
+            console.log('Done');
+          })
+        })
       });
     });
   </script>
